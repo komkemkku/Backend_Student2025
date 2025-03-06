@@ -3,6 +3,9 @@ package main
 import (
 	"Beckend_Student2025/cmd"
 	config "Beckend_Student2025/configs"
+	admin "Beckend_Student2025/controllers/admins"
+	"Beckend_Student2025/controllers/staffs"
+	"Beckend_Student2025/controllers/users"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -29,6 +32,30 @@ func main() {
 	}))
 
 	// md := middlewares.AuthMiddleware()
+
+	// Info
+	r.GET("/staff/:id", staffs.GetInfoStaff)
+	r.GET("/admin/:id", admin.GetInfoAdmin)
+	r.GET("/user/:id", users.GetInfoUser)
+
+	// User
+	r.GET("/user/:id", users.GetUserByID)
+	r.POST("/user/create", users.CreateUser)
+	r.DELETE("/user/:id", users.DeleteUser)
+
+	// Staff
+	r.GET("/staff/:id", staffs.GetStaffByID)
+	r.POST("/staff/create", staffs.CreateStaff)
+	r.DELETE("/staff/:id", staffs.DeleteStaff)
+	r.PATCH("/staff/:id", staffs.UpdateStaff)
+
+	// Admin
+	r.GET("/admin/:id", admin.GetAdminByID)
+	r.POST("/admin/create", admin.CreateAdmin)
+	r.DELETE("/admin/:id", admin.DeleteAdmin)
+	r.PATCH("/admin/:id", admin.UpdateAdmin)
+
+	r.Run()
 
 }
 

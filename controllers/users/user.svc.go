@@ -2,7 +2,10 @@ package users
 
 import (
 	config "Beckend_Student2025/configs"
+	model "Beckend_Student2025/models"
+	"Beckend_Student2025/requests"
 	response "Beckend_Student2025/responses"
+	"Beckend_Student2025/utils"
 	"context"
 	"errors"
 )
@@ -26,4 +29,48 @@ func GetByIdUserService(ctx context.Context, id int) (*response.UserResponses, e
 		return nil, err
 	}
 	return user, nil
+}
+
+func CreateUserService(ctx context.Context, req requests.UserCreateRequest) (*model.Users, error) {
+
+	hashpassword, _ := utils.HashPassword(req.Password)
+
+	user := &model.Users{
+		Firstname:        req.Firstname,
+		Lastname:         req.Lastname,
+		Nickname:         req.Nickname,
+		StudentID:        req.StudentID,
+		Faculty:          req.Faculty,
+		MedicalCondition: req.MedicalCondition,
+		FoodAllergies:    req.FoodAllergies,
+		Email:            req.Email,
+		Password:         hashpassword,
+	}
+	user.SetCreatedNow()
+
+	_, err := db.NewInsert().Model(user).Exec(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+
+}
+
+func DeleteUserService(ctx context.Context, id int) error {
+	ex, err := db.NewSelect().TableExpr("users").Where("id=?", id).Exists(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	if !ex {
+		return errors.New("user not found")
+	}
+
+	_, err = db.NewDelete().TableExpr("users").Where("id =?", id).Exec(ctx)
+	if err != nil {
+		return err
+	}
+	return nil
 }

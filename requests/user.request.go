@@ -14,7 +14,7 @@ type UserCreateRequest struct {
 	Firstname        string `json:"firstname"`
 	Lastname         string `json:"lastname"`
 	Nickname         string `json:"nickname"`
-	StudentID        int    `json:"student_id"`
+	StudentID        string `json:"student_id"`
 	Faculty          string `json:"faculty"`
 	MedicalCondition string `json:"medical_condition"`
 	FoodAllergies    string `json:"food_allergies"`
