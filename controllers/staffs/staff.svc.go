@@ -31,6 +31,34 @@ func GetByIdStaffService(ctx context.Context, id int) (*response.StaffResponses,
 	return staff, nil
 }
 
+func ListStaffService(ctx context.Context, req requests.StaffRequest) ([]response.StaffResponses, int, error) {
+
+	var Offset int64
+	if req.Page > 0 {
+		Offset = (req.Page - 1) * req.Size
+	}
+
+	resp := []response.StaffResponses{}
+
+	// สร้าง query
+	query := db.NewSelect().
+		TableExpr("staffs AS s").
+		Column("s.id", "s.username", "s.password", "s.created_at")
+
+	total, err := query.Count(ctx)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	// Execute query
+	err = query.Offset(int(Offset)).Limit(int(req.Size)).Scan(ctx, &resp)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return resp, total, nil
+}
+
 func CreateStaffService(ctx context.Context, req requests.StaffCreateRequest) (*model.Staffs, error) {
 
 	hashpassword, _ := utils.HashPassword(req.Password)

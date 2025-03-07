@@ -7,7 +7,9 @@ import (
 	"Beckend_Student2025/controllers/auth"
 	"Beckend_Student2025/controllers/events"
 	"Beckend_Student2025/controllers/staffs"
+	"Beckend_Student2025/controllers/tickets"
 	"Beckend_Student2025/controllers/users"
+	"Beckend_Student2025/middlewares"
 	"Beckend_Student2025/utils"
 	"fmt"
 	"log"
@@ -55,7 +57,7 @@ func main() {
 		AllowFiles:             false,
 	}))
 
-	// md := middlewares.AuthMiddleware()
+	md := middlewares.AuthMiddleware()
 
 	r.POST("/user/forgot", users.ForgotStudentID)
 
@@ -73,6 +75,7 @@ func main() {
 	r.DELETE("/user/delete/:id", users.DeleteUser)
 
 	r.GET("/staff/:id", staffs.GetStaffByID)
+	r.GET("/staff/list", staffs.StaffList)
 	r.POST("/staff/create", staffs.CreateStaff)
 	r.DELETE("/staff/delete/:id", staffs.DeleteStaff)
 	r.PATCH("/staff/update/:id", staffs.UpdateStaff)
@@ -86,6 +89,9 @@ func main() {
 	r.PATCH("/event/update/:id", events.UpdateEvent)
 	r.GET("/event/:id", events.GetEventByID)
 	r.GET("/event/list", events.EventList)
+
+	r.GET("/ticket/list", tickets.TicketList)
+	r.POST("ticket/create", md, tickets.CreateTicket)
 
 	r.Run()
 }

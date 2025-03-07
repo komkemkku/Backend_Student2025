@@ -1,6 +1,7 @@
 package staffs
 
 import (
+	model "Beckend_Student2025/models"
 	"Beckend_Student2025/requests"
 	response "Beckend_Student2025/responses"
 
@@ -32,6 +33,28 @@ func GetStaffByID(c *gin.Context) {
 		return
 	}
 	response.Success(c, data)
+}
+
+func StaffList(c *gin.Context) {
+	req := requests.StaffRequest{}
+	if err := c.BindQuery(&req); err != nil {
+		response.BadRequest(c, err.Error())
+		return
+	}
+
+	data, total, err := ListStaffService(c.Request.Context(), req)
+	if err != nil {
+		response.InternalError(c, err.Error())
+		return
+	}
+
+	paginate := model.Paginate{
+		Page:  req.Page,
+		Size:  req.Size,
+		Total: int64(total),
+	}
+
+	response.SuccessWithPaginate(c, data, paginate)
 }
 
 func CreateStaff(c *gin.Context) {
