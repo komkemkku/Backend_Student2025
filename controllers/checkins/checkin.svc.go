@@ -10,12 +10,11 @@ import (
 	"time"
 )
 
-// เชื่อมต่อฐานข้อมูล
 var db = config.Database()
 
 // CheckinService - บันทึก Check-in และดึงข้อมูลผู้ใช้ + กิจกรรม
 func CheckinService(c context.Context, req requests.CheckInCreateRequest) (*response.CheckInResponse, error) {
-	// ตรวจสอบว่าผู้ใช้มีตั๋วในกิจกรรมนี้หรือไม่
+
 	var ticket model.Tickets
 	err := db.NewSelect().Model(&ticket).
 		Where("user_id = ? AND event_id = ?", req.UserID, req.EventID).
@@ -33,7 +32,7 @@ func CheckinService(c context.Context, req requests.CheckInCreateRequest) (*resp
 		return nil, fmt.Errorf("user already checked in")
 	}
 
-	// บันทึก Check-in ลงฐานข้อมูล
+
 	newCheckin := &model.Checkins{
 		TicketID:    ticket.ID,
 		StaffID:     req.StaffID, // Staff ID ได้จาก Token
@@ -44,7 +43,6 @@ func CheckinService(c context.Context, req requests.CheckInCreateRequest) (*resp
 		return nil, fmt.Errorf("failed to check in")
 	}
 
-	// ดึงข้อมูล User และ Event
 	var user model.Users
 	var event model.Events
 
