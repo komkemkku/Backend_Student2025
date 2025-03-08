@@ -1,9 +1,11 @@
 package requests
 
 type CheckInRequest struct {
-	Page   int64  `form:"page"`
-	Size   int64  `form:"size"`
-	Search string `form:"search"`
+	Page    int64  `form:"page"`
+	Size    int64  `form:"size"`
+	Search  string `form:"search"`
+	UserID  int    `json:"user_id"`
+	EventID int    `json:"event_id"`
 }
 
 type CheckInIdRequest struct {
@@ -11,8 +13,10 @@ type CheckInIdRequest struct {
 }
 
 type CheckInCreateRequest struct {
-	TicketID int `json:"ticket_id"`
+	// TicketID int `json:"ticket_id"`
 	StaffID  int `json:"staff_id"`
+	UserID   int `json:"user_id"`
+	EventID  int `json:"event_id"`
 }
 
 type CheckInUpdateRequest struct {

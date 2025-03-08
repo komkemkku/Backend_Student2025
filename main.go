@@ -5,6 +5,7 @@ import (
 	config "Beckend_Student2025/configs"
 	admin "Beckend_Student2025/controllers/admins"
 	"Beckend_Student2025/controllers/auth"
+	"Beckend_Student2025/controllers/checkins"
 	"Beckend_Student2025/controllers/events"
 	"Beckend_Student2025/controllers/staffs"
 	"Beckend_Student2025/controllers/tickets"
@@ -90,8 +91,10 @@ func main() {
 	r.GET("/event/:id", events.GetEventByID)
 	r.GET("/event/list", events.EventList)
 
-	r.GET("/ticket/list", tickets.TicketList)
+	r.GET("/ticket/list", md, tickets.TicketList)
 	r.POST("ticket/create", md, tickets.CreateTicket)
+
+	r.POST("/checkin/create", md, checkins.CheckinCreate)
 
 	r.Run()
 }
