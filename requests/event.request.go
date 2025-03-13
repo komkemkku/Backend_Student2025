@@ -15,6 +15,7 @@ type EventCreateRequest struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
+	Dress       string `json:"dress"`
 	StartTime   string `json:"start_time"`
 	EndTime     string `json:"end_time"`
 	StartDate   string `json:"start_date"`
@@ -28,6 +29,7 @@ type EventUpdateRequest struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
+	Dress       string `json:"dress"`
 	StartTime   string `json:"start_time"`
 	EndTime     string `json:"end_time"`
 	StartDate   string `json:"start_date"`

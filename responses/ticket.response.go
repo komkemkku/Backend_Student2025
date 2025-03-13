@@ -26,6 +26,7 @@ type EventResp struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
+	Dress       string `json:"derss"`
 	StartTime   string `json:"start_time"`
 	EndTime     string `json:"end_time"`
 	StartDate   string `json:"start_date"`

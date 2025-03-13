@@ -10,11 +10,13 @@ import (
 )
 
 func TicketList(c *gin.Context) {
+	user := c.GetInt("user_id")
 	req := requests.TicketRequest{}
 	if err := c.BindQuery(&req); err != nil {
 		response.BadRequest(c, err.Error())
 		return
 	}
+	req.UserID = user
 
 	data, total, err := ListTicketService(c.Request.Context(), req)
 	if err != nil {
@@ -29,6 +31,21 @@ func TicketList(c *gin.Context) {
 	}
 
 	response.SuccessWithPaginate(c, data, paginate)
+}
+
+func GetTicketByID(c *gin.Context) {
+	id := requests.TicketIdRequest{}
+	if err := c.BindUri(&id); err != nil {
+		response.BadRequest(c, err.Error())
+		return
+	}
+
+	data, err := GetByIdTicketService(c, id.ID)
+	if err != nil {
+		response.InternalError(c, err.Error())
+		return
+	}
+	response.Success(c, data)
 }
 
 // CreateTicket - API สำหรับสร้างตั๋วและ QR Code
@@ -50,6 +67,7 @@ func CreateTicket(c *gin.Context) {
 
 	// ส่ง Base64 กลับไปที่ Client
 	c.JSON(http.StatusOK, gin.H{
+		"tick_id": ticket.ID,
 		"message": "Ticket created successfully",
 		"qr_code": ticket.QrCode,
 	})

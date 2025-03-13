@@ -24,6 +24,7 @@ func GetByIdStaffService(ctx context.Context, id int) (*response.StaffResponses,
 
 	err = db.NewSelect().TableExpr("staffs AS s").
 		Column("s.id", "s.username", "s.password", "s.created_at").
+		Where("s.id = ?", id).
 		Scan(ctx, staff)
 	if err != nil {
 		return nil, err

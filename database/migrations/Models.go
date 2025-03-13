@@ -6,9 +6,9 @@ func Models() []any {
 	return []any{
 
 		// (*model.Users)(nil),
-		(*model.Checkins)(nil),
+		// (*model.Checkins)(nil),
 		// (*model.Staffs)(nil),
-		// (*model.Events)(nil),
+		(*model.Events)(nil),
 		// (*model.Banner)(nil),
 		// (*model.Tickets)(nil),
 		// (*model.Admins)(nil),

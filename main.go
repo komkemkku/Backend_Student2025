@@ -38,7 +38,7 @@ func main() {
 		log.Fatalf("Error running command: %v", err)
 	}
 
-	err = utils.SendEmail("phloem.contact@gmail.com", "Test Subject", "This is a test email")
+	err = utils.SendEmail("komkem.k@kkumail.com", "Test Subject", "This is a test email")
 	if err != nil {
 		fmt.Println("❌ Failed to send email:", err)
 	} else {
@@ -66,9 +66,9 @@ func main() {
 	r.POST("/staff/login", auth.LoginStaff)
 	r.POST("/admin/login", auth.LoginAdmin)
 
-	r.GET("/staff/info", staffs.GetInfoStaff)
-	r.GET("/admin/info", admin.GetInfoAdmin)
-	r.GET("/user/info", users.GetInfoUser)
+	r.GET("/staff/info", md, staffs.GetInfoStaff)
+	r.GET("/admin/info", md, admin.GetInfoAdmin)
+	r.GET("/user/info", md, users.GetInfoUser)
 
 	r.GET("/user/:id", users.GetUserByID)
 	r.GET("/user/list", users.UserList)
@@ -92,6 +92,7 @@ func main() {
 	r.GET("/event/list", events.EventList)
 
 	r.GET("/ticket/list", md, tickets.TicketList)
+	r.GET("/ticket/:id", tickets.GetTicketByID)
 	r.POST("ticket/create", md, tickets.CreateTicket)
 
 	r.POST("/checkin/create", md, checkins.CheckinCreate)
