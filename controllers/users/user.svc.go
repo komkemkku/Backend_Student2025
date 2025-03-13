@@ -16,7 +16,7 @@ import (
 var db = config.Database()
 
 func GetByIdUserService(ctx context.Context, id int) (*response.UserResponses, error) {
-	ex, err := db.NewSelect().TableExpr("user").Where("id = ?", id).Exists(ctx)
+	ex, err := db.NewSelect().TableExpr("users").Where("id = ?", id).Exists(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -26,7 +26,8 @@ func GetByIdUserService(ctx context.Context, id int) (*response.UserResponses, e
 	user := &response.UserResponses{}
 
 	err = db.NewSelect().TableExpr("users AS u").
-		Column("u.id", "u.firstname", "u.lastname", "u.nickname", "u.email", "u.student_id", "u.faculty", "u.medical_condition", "u.food_allergies", "a.created_at").
+		Column("u.id", "u.firstname", "u.lastname", "u.nickname", "u.email", "u.student_id", "u.faculty", "u.medical_condition", "u.food_allergies", "u.created_at").
+		Where("u.id = ?", id).
 		Scan(ctx, user)
 	if err != nil {
 		return nil, err
@@ -46,7 +47,7 @@ func ListUserService(ctx context.Context, req requests.UserRequest) ([]response.
 	// สร้าง query
 	query := db.NewSelect().
 		TableExpr("users AS u").
-		Column("u.id", "u.firstname", "u.lastname", "u.nickname", "u.email", "u.student_id", "u.faculty", "u.medical_condition", "u.food_allergies", "a.created_at")
+		Column("u.id", "u.firstname", "u.lastname", "u.nickname", "u.email", "u.student_id", "u.faculty", "u.medical_condition", "u.food_allergies", "u.created_at")
 
 	if req.Search != "" {
 		query.Where("u.student_id ILIKE ? OR u.firstname ILIKE ? OR u.lastname ILIKE ?",

@@ -12,6 +12,7 @@ type Events struct {
 	Name        string `bun:"name"`
 	Description string `bun:"description"`
 	Location    string `bun:"location"`
+	Dress       string `bun:"dress"`
 	StartTime   string `bun:"start_time"`
 	EndTime     string `bun:"end_time"`
 	StartDate   string `bun:"start_date"`

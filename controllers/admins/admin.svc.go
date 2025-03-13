@@ -24,6 +24,7 @@ func GetByIdAdminService(ctx context.Context, id int) (*response.AdminResponses,
 
 	err = db.NewSelect().TableExpr("admins AS a").
 		Column("a.id", "a.username", "a.password", "a.created_at").
+		Where("a.id = ?", id).
 		Scan(ctx, admin)
 	if err != nil {
 		return nil, err

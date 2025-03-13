@@ -23,7 +23,7 @@ func ListEventService(ctx context.Context, req requests.EventRequest) ([]respons
 	// สร้าง query
 	query := db.NewSelect().
 		TableExpr("events AS e").
-		Column("e.id", "e.image", "e.name", "e.description", "e.location", "e.start_time", "e.end_time", "e.start_date", "e.end_date", "e.is_active", "e.created_at")
+		Column("e.id", "e.image", "e.name", "e.description", "e.location", "e.dress", "e.start_time", "e.end_time", "e.start_date", "e.end_date", "e.is_active", "e.created_at")
 
 	total, err := query.Count(ctx)
 	if err != nil {
@@ -31,7 +31,7 @@ func ListEventService(ctx context.Context, req requests.EventRequest) ([]respons
 	}
 
 	// Execute query
-	err = query.Offset(int(Offset)).Limit(int(req.Size)).Scan(ctx, &resp)
+	err = query.Order("e.id ASC").Offset(int(Offset)).Limit(int(req.Size)).Scan(ctx, &resp)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -45,12 +45,13 @@ func GetByIdEventService(ctx context.Context, id int) (*response.EventResponses,
 		return nil, err
 	}
 	if !ex {
-		return nil, errors.New("admin not found")
+		return nil, errors.New("event not found")
 	}
 	event := &response.EventResponses{}
 
 	err = db.NewSelect().TableExpr("events AS e").
-		Column("e.id", "e.image", "e.name", "e.description", "e.location", "e.start_time", "e.end_time", "e.start_date", "e.end_date", "e.is_active", "e.created_at").
+		Column("e.id", "e.image", "e.name", "e.description", "e.location", "e.dress", "e.start_time", "e.end_time", "e.start_date", "e.end_date", "e.is_active", "e.created_at").
+		Where("e.id = ?", id).
 		Scan(ctx, event)
 	if err != nil {
 		return nil, err
@@ -73,25 +74,26 @@ func CreateEventService(ctx context.Context, req requests.EventCreateRequest) (*
 	}
 
 	// เพิ่ม
-	category := &model.Events{
+	event := &model.Events{
 		Image:       req.Image,
 		Name:        req.Name,
 		Description: req.Description,
 		Location:    req.Location,
+		Dress:       req.Dress,
 		StartTime:   req.StartTime,
 		EndTime:     req.EndTime,
 		StartDate:   req.StartDate,
 		EndDate:     req.EndDate,
 		Is_active:   req.Is_active,
 	}
-	category.SetCreatedNow()
+	event.SetCreatedNow()
 
-	_, err = db.NewInsert().Model(category).Exec(ctx)
+	_, err = db.NewInsert().Model(event).Exec(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	return category, nil
+	return event, nil
 
 }
 
@@ -116,6 +118,7 @@ func UpdateEventService(ctx context.Context, ID int, req requests.EventUpdateReq
 	event.Name = req.Name
 	event.Description = req.Description
 	event.Location = req.Location
+	event.Dress = req.Dress
 	event.StartTime = req.StartTime
 	event.EndTime = req.EndTime
 	event.StartDate = req.StartDate
