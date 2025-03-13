@@ -54,7 +54,7 @@ func ListTicketService(ctx context.Context, req requests.TicketRequest) ([]respo
 	}
 
 	if req.UserID != 0 {
-		query.Where("s.user_id = ?", req.UserID)
+		query.Where("t.user_id = ?", req.UserID)
 	}
 
 	// Execute query

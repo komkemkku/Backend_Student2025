@@ -1,12 +1,14 @@
 package model
 
-import "github.com/uptrace/bun"
+import (
+	"github.com/uptrace/bun"
+)
 
 type Events struct {
 	bun.BaseModel `bun:"table:events"`
 
 	ID          int    `bun:",type:serial,autoincrement,pk"`
-	Image       string `bun:"image"`
+	Image       string   `bun:"image"`
 	Name        string `bun:"name"`
 	Description string `bun:"description"`
 	Location    string `bun:"location"`

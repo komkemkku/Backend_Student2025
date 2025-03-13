@@ -20,6 +20,21 @@ func GetInfoStaff(c *gin.Context) {
 
 }
 
+// func GetStaffByID(c *gin.Context) {
+// 	id := requests.StaffIdRequest{}
+// 	if err := c.BindUri(&id); err != nil {
+// 		response.BadRequest(c, err.Error())
+// 		return
+// 	}
+
+// 	data, err := GetByIdStaffService(c, id.ID)
+// 	if err != nil {
+// 		response.InternalError(c, err.Error())
+// 		return
+// 	}
+// 	response.Success(c, data)
+// }
+
 func GetStaffByID(c *gin.Context) {
 	id := requests.StaffIdRequest{}
 	if err := c.BindUri(&id); err != nil {

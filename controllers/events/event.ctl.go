@@ -15,7 +15,7 @@ func GetEventByID(c *gin.Context) {
 		return
 	}
 
-	data, err := GetByIdEventService(c, id.ID)
+	data, err := GetByIdEventService(c, int(id.ID))
 	if err != nil {
 		response.InternalError(c, err.Error())
 		return
